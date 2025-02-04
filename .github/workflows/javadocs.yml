@@ -13,41 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# Only run once for latest commit per ref and cancel other (previous) runs.
 
-name: JavaDocs
-
+name: Modified JavaDocs
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    paths-ignore:
-      - 'doc/**'
-      - 'ide-config/**'
-      - '**.md'
-
-concurrency:
-  # Only run once for latest commit per ref and cancel other (previous) runs.
-  group: ci-docs-kubernetes-client-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: read
-
 jobs:
   javadoc:
-    name: JavaDocs
+    name: javadoc
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Java 8
-        uses: actions/setup-java@v4
-        with:
-          java-version: '8'
-          distribution: 'temurin'
-      - name: Check Java Docs
-        run: ./mvnw ${MAVEN_ARGS} clean install javadoc:jar -DskipTests -Pjavadoc-test
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Java 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: temurin
+    - name: Check Java Docs
+      run: ./mvnw ${MAVEN_ARGS} clean install javadoc:jar -DskipTests -Pjavadoc-test
+'on':
+- push
+- workflow_dispatch
