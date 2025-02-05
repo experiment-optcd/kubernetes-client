@@ -25,15 +25,16 @@ jobs:
     name: javadoc
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Setup Java 8
-      uses: actions/setup-java@v4
-      with:
-        java-version: '8'
-        distribution: temurin
-    - name: Check Java Docs
-      run: ./mvnw ${MAVEN_ARGS} clean install javadoc:jar -DskipTests -Pjavadoc-test
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: temurin
+      - name: Check Java Docs
+        run: ./mvnw ${MAVEN_ARGS} clean install javadoc:jar -DskipTests -Pjavadoc-test
+          "-Dmaven.test.skip=true" "-DskipTests=false" "-Dmaven.test.skip=false" "-Dtest.source.skip=true"
 'on':
-- push
-- workflow_dispatch
+  - push
+  - workflow_dispatch
